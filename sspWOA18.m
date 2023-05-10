@@ -1,7 +1,7 @@
 function [ss, depths, ssp, sspFiles, labels] = sspWOA18(siteLon,siteLat)
 
 addpath('c:\analysis\seawater\');
-woaFolder = getWoaFolder;
+woaFolder = getWoaSoundSpeedFolder;
 sspFiles = dir([woaFolder 'woa18_*.mat']);
 
 ss = cell(size(sspFiles));
