@@ -1,0 +1,2 @@
+wget -r -nH --cut-dirs=5 --no-parent --reject="index.html*" -nc -w 5 "https://www.ncei.noaa.gov/data/oceans/woa/WOA18/DATA/temperature/netcdf/A5B7/0.25/"
+wget -r -nH --cut-dirs=5 --no-parent --reject="index.html*" -nc -w 5 "https://www.ncei.noaa.gov/data/oceans/woa/WOA18/DATA/salinity/netcdf/A5B7/0.25/"
