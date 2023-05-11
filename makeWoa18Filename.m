@@ -1,0 +1,3 @@
+function filename = makeWoa18Filename(...
+                                    decade,variable,timePeriod,gridSize)
+filename=sprintf('woa18_%s_%s%s_%s',decade,variable,timePeriod,gridSize);

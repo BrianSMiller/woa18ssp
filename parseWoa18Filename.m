@@ -1,9 +1,10 @@
-function [decade, variable, timePeriod, fieldType, gridSize] = ...
-                                        parseWoa18NetcdfFilename(filename)
+function [decade, variable, timePeriod, gridSize] = ...
+                                        parseWoa18Filename(filename)
 % Excerpt from WOA18 documentation
 % File naming convention
-% All files, regardless of format, are follows the same naming convention:
+% All files, except netcdf, follow the same naming convention:
 % woa18_[DECA]_[v][tp][ft][gr].[form_end]
+% Netcdf files follow the format: woa18_[DECA]_[v][tp]_[gr].nc
 % Where:
 % [DECA] represents decade, the time span (years) represented by the
 %   objectively analyzed means and other statistical fields as listed in
@@ -33,20 +34,19 @@ function [decade, variable, timePeriod, fieldType, gridSize] = ...
 % Example: woa18_95A4_s02an01.nc is a file containing World Ocean Atlas
 % 2018, February objectively analyzed salinity on one-degree grid
 % resolution for the years 1995-2004 in netCDF format.
-if contains('decav',filename)
-    codes = textscan(filename,'woa18_%4c%*[^_]_%1c%2c_%2c*');
-    fieldType = '';
-else 
-    codes = textscan(filename,'woa18_%4c_%1c%2c%2c%2c*');
-    fieldType = codes{4};
-end
 
+[path, filename, ext] = fileparts(filename)
+if strcmpi(ext,'.nc') %netcdf file
+    if contains(filename,'decav')
+        formatSpec = 'woa18_%5c_%1c%2c_%2c.nc';
+    else
+        formatSpec = 'woa18_%4c_%1c%2c_%2c.nc';
+    end
+    codes = textscan(filename,formatSpec);
+    fieldType = '';
+end
 
 decade = codes{1};
-if strcmpi(decade,'deca');
-    decade = 'decav';
-end
 variable = codes{2};
 timePeriod = codes{3};
-
-gridSize = codes{5};
+gridSize = codes{4};
