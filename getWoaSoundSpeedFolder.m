@@ -1,7 +1,14 @@
-function woaFolder = getWoaSoundSpeedFolder()
+function woaFolder = getWoaSoundSpeedFolder(decade)
 woaFolder = 'c:\analysis\woa18ssp\mat\';
-if ~exist(woaFolder,'file')
-    error(sprintf(['World Ocean Atlas folder, %s does not exist.\n'...
-        'Please edit line 2 of %s to point to the correct WOA2018 data folder'],...
-        woaFolder, which('getWoaFolder')));
+
+if nargin < 1 || ~exist(fullfile(woaFolder,decade,'\'),'dir')
+    decade = 'A5B7';
+end
+woaFolder = fullfile(woaFolder,decade,'\');
+
+if ~exist(woaFolder,'dir')
+    errorStr = ['World Ocean Atlas folder, %s does not exist.\n'...
+        'Please edit line 2 of %s to point to the correct WOA2018',...
+        'data folder'];
+    error(errorStr, woaFolder, which('getWoaSoundSpeedFolder'));
 end

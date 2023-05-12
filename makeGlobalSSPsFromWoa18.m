@@ -9,13 +9,16 @@ gridSizes = {'1.00','5deg','0.25'};
 
 
 if ~exist(pathToWoa18data,'dir')
-    base = '\\aad.gov.au\files\Ecological_Informatics\data\gridded\data\';
+    base = '\\aad.gov.af\files\Ecological_Informatics\data\gridded\data\';
     subFolder  = 'www.ncei.noaa.gov\data\oceans\woa\WOA18\DATA\';
     pathToWoa18data = fullfile(base,subFolder);
+    pathToWoa18data = uigetdir(pathToWoa18data,...
+        'Where are WOA18 temperature and salinity files located?');
 end
 
 if nargin<2 || ~exist(pathToSaveSsps,'dir')
-    pathToSaveSsps= uigetdir(pwd,'Select folder to save sound speed profiles:');
+    pathToSaveSsps= uigetdir(pwd,...
+        'Select folder to save sound speed profiles:');
 end
 
 if nargin < 3

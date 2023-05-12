@@ -35,15 +35,14 @@ function [decade, variable, timePeriod, gridSize] = ...
 % 2018, February objectively analyzed salinity on one-degree grid
 % resolution for the years 1995-2004 in netCDF format.
 
-[path, filename, ext] = fileparts(filename)
-if strcmpi(ext,'.nc') %netcdf file
+[~, filename, ext] = fileparts(filename);
+if any(strcmpi(ext,{'.nc','.mat'})) %netcdf file
     if contains(filename,'decav')
-        formatSpec = 'woa18_%5c_%1c%2c_%2c.nc';
+        formatSpec = 'woa18_%5c_%1c%2c_%2c.*';
     else
-        formatSpec = 'woa18_%4c_%1c%2c_%2c.nc';
+        formatSpec = 'woa18_%4c_%1c%2c_%2c.*';
     end
     codes = textscan(filename,formatSpec);
-    fieldType = '';
 end
 
 decade = codes{1};

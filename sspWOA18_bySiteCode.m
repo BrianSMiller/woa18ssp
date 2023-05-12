@@ -13,8 +13,11 @@ if ~exist(outFolder,'dir')
     mkdir(outFolder);
 end
 
+timeCodes = 0:16; % Get all available time codes
+
 m = loadRecorderMetaData(siteCode);
-[ss, depth, ssp, sspInputs, labels]=sspWOA18(m.longitude,m.latitude);
+[ss, depth, ssp, sspInputs, labels]=sspWOA18(m.longitude,m.latitude,...
+                                                timeCodes);
   
 for i = 1:length(labels)
     sspFile = sprintf('woa18_A5B7_c%s_%s.csv',time2WoaCode(labels{i}),siteCode);  

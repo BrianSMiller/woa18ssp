@@ -1,14 +1,28 @@
-function [ss, depths, ssp, sspFiles, labels] = sspWOA18(siteLon,siteLat)
+function [ss, depths, ssp, sspFiles, labels] = sspWOA18(siteLon,siteLat,timePeriod)
 
-addpath('c:\analysis\seawater\');
 woaFolder = getWoaSoundSpeedFolder;
-sspFiles = dir([woaFolder 'woa18_*.mat']);
+
+% If timeperiod is number between 0 and 16
+if all(isnumeric(timePeriod)) && all(timePeriod >=0) && all(timePeriod <= 16)
+    tp = cell(size(timePeriod));
+    for i = 1:length(timePeriod)
+        tp{i} = sprintf('%02u',round(timePeriod(i)));
+    end
+    timePeriod = tp;
+elseif ischar(timePeriod)
+    timePeriod = cellstr(timePeriod);
+end
+
+for i = 1:length(timePeriod)
+    sspFiles(i) = dir(fullfile(getWoaSoundSpeedFolder,...
+                              sprintf('woa18_*_c%s_*.mat',timePeriod{i})));
+end
 
 ss = cell(size(sspFiles));
 ssp = cell(size(sspFiles));
 
 for i = 1:length(sspFiles)
-    [decade, variable, timePeriod, fieldType, gridSize] = ...
+    [decade, variable, timePeriod, gridSize] = ...
                                       parseWoa18Filename(sspFiles(i).name);
     load(fullfile(sspFiles(i).folder, sspFiles(i).name),...
         'time','lat','lon','depth','c');
