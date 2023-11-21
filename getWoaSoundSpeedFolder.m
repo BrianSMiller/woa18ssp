@@ -1,5 +1,5 @@
 function woaFolder = getWoaSoundSpeedFolder(decade)
-woaFolder = 'c:\analysis\woa18ssp\mat\';
+woaFolder = 'S:\data\woa18\mat\';
 
 if nargin < 1 || ~exist(fullfile(woaFolder,decade,'\'),'dir')
     decade = 'A5B7';
