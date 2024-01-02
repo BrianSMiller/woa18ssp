@@ -1,5 +1,8 @@
 % Read data from Wolrd Ocean Atlas from locally stored netcdf file
-function [data,lon,lat,depth] = readWoa18Local(variable, decade, time, gridSize)
+% Locally stored files must be a mirror of the WOA18 including the data 
+% contained within the following path:
+% 'https://www.ncei.noaa.gov/data/oceans/woa/WOA18/DATA/'
+function [data,lon,lat,depth,time] = readWoa18LocalNetcdf(variable, decade, time, gridSize)
 
 pathToWoa18data = getAADWoa18Path();
 
@@ -45,15 +48,14 @@ varCode = var2WoaCode(variable);
 % Chemistry variables don't follow the decade subfolder structure and are
 % just stored under all. Also they only have gridsizes of 1 or 5 degree
 if any(strcmp(variable,{'AOU','nitrate','phosphate','silicate','oxygen','o2sat'}))
-    decade = 'all'
-    if gridCode=='04'
+    decade = 'all';
+    if strcmp(gridCode,'04')
         error('Chemistry variables do not have 0.25 degree resolution.\n Please use 1 or 5 degree instead')
     end
 end
     
 subPath = sprintf('%s\\netcdf\\%s\\%s\\',variable, decade, gridPathCode);
 fullPath = fullfile(pathToWoa18data, subPath);
-files = dir([fullPath '*.nc']);
 
 file = makeWoa18Filename(decade,varCode,timeCode,gridCode);
 
@@ -63,9 +65,6 @@ if ~exist(f,'file')
 end
 
 %%
-tic;
-
-[decade, ~, timePeriod, gridSize]= parseWoa18Filename(f);
 fieldType = 'an';
 time = ncread(f,'time');
 lat = ncread(f,'lat');
@@ -73,4 +72,4 @@ lon = ncread(f,'lon');
 depth = ncread(f,'depth');
 data = ncread(f,[varCode '_' fieldType]);
 
-toc;
+
