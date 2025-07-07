@@ -1,5 +1,12 @@
-function [ss, depths, ssp, sspFiles, labels] = sspWOA18(siteLon,siteLat,timePeriod)
-
+function [ssp, sspFiles, labels] = sspWOA18(siteLon,siteLat,timePeriod)
+% Derive a sound speed profile for a latitude and longitude from the World
+% Ocean Atlas 2018 salinity and temperature as a function of depth. 
+% Time periods follow the WOA coding and should be a vector containing
+% integers from 0-16
+% 1-12 are months of the year;
+% 0 is the whole year
+% 13-16 are the Austral seasons: Summer (Jan-Mar), Autumn (Apr-Jun), 
+%       Winter (Jul-Sep), Spring (Oct-Dec) respectively.
 woaFolder = getWoaSoundSpeedFolder;
 
 % If timeperiod is number between 0 and 16
@@ -12,6 +19,7 @@ if all(isnumeric(timePeriod)) && all(timePeriod >=0) && all(timePeriod <= 16)
 elseif ischar(timePeriod)
     timePeriod = cellstr(timePeriod);
 end
+timePeriod = cellfun(@time2WoaCode,timePeriod,'UniformOutput',false);
 
 for i = 1:length(timePeriod)
     sspFiles(i) = dir(fullfile(getWoaSoundSpeedFolder,...

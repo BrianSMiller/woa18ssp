@@ -5,6 +5,11 @@ if iscell(woaCode)
     t = cellfun(@woaCode2time, woaCode,'UniformOutput',false);
     return;
 end
+
+if isnumeric(woaCode)
+    woaCode=sprintf('%02g',woaCode);
+end
+
 switch lower(woaCode)
     case '00'
          t = 'year';

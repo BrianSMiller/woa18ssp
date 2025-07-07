@@ -8,8 +8,8 @@ decades = {'5564','6574','7584','8594','95A4','A5B7','decav','all'};
 gridSizes = {'1.00','5deg','0.25'};
 
 
-if ~exist(pathToWoa18data,'dir')
-    base = '\\aad.gov.af\files\Ecological_Informatics\data\gridded\data\';
+if nargin < 1 || ~exist(pathToWoa18data,'dir')
+    base = '\\aad.gov.au\files\Ecological_Informatics\data\gridded\data\';
     subFolder  = 'www.ncei.noaa.gov\data\oceans\woa\WOA18\DATA\';
     pathToWoa18data = fullfile(base,subFolder);
     pathToWoa18data = uigetdir(pathToWoa18data,...
@@ -42,6 +42,7 @@ if ~any(strcmpi(gridSize,gridSizes))
     error(errMessage);
 end
 addpath('c:\analysis\seawater\');
+addpath('c:\analysis\gsw\');
 
 tempSubPath = sprintf('temperature\\netcdf\\%s\\%s\\', decade, gridSize);
 salSubPath = sprintf('salinity\\netcdf\\%s\\%s\\', decade, gridSize);
@@ -81,8 +82,10 @@ for f = 1:length(tempFiles)
     %%
     c = nan(size(tMean));
     for i = 1:length(lon)
-        for j = 1:length(lat)
-            c(i,j,:) = sw_svel(squeeze(sMean(i,j,:)),squeeze(tMean(i,j,:)),...
+        for j = 1:length(lat) 
+%             c(i,j,:) = sw_svel(squeeze(sMean(i,j,:)),squeeze(tMean(i,j,:)),...
+%                 depth);
+            c(i,j,:) = gsw_sound_speed(squeeze(sMean(i,j,:)),squeeze(tMean(i,j,:)),...
                 depth);
         end
     end
