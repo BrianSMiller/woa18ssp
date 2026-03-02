@@ -36,7 +36,8 @@ for i = 1:length(sspFiles)
         'time','lat','lon','depth','c');
     labels{i} = char(woaCode2time(timePeriod));
     
-    [~, lonIx] = min(abs(siteLon-lon));
+    siteLonNorm = mod(siteLon, 360);   % convert to 0-360 to match WOA grid
+    [~, lonIx] = min(abs(siteLonNorm-lon));
     [~, latIx] = min(abs(siteLat-lat));
     ssLev = squeeze(c(lonIx,latIx,:));
     

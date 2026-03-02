@@ -6,7 +6,9 @@ end
 
 for i = 1:length(lon)
     depth = woaDepths;
-    [~, lonIx] = min(abs(lon(i)-woaLon));
+    lonNorm = mod(lon(i), 360); % convert to 0-360 to match WOA grid
+    depth = woaDepths;
+    [~, lonIx] = min(abs(lonNorm - woaLon));
     [~, latIx] = min(abs(lat(i)-woaLat));
     woaLocation(i).lon = woaLon(lonIx);
     woaLocation(i).lat = woaLat(latIx);
